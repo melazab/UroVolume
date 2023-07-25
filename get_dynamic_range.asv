@@ -1,0 +1,19 @@
+G_data = [];
+volume = 
+numFills = length(unique(data_01.vol_Infused));
+
+xFills = diff(data_01.vol_Infused);
+idxFills = sort([find(xFills>0);find(xFills<0)]);
+idxFills(end+1) = length(data_01.vol_Infused);
+
+numTrials = length(idxFills)/numFills;
+idxFills = reshape(idxFills, [numFills numTrials]);
+
+
+for col = 1:numTrials 
+    for row = 1:numFills-1
+       vol_a = idxFills(row,col);
+       vol_b = idxFills(row+1,col);
+       G_data(row, col) = median(data_01.conductance(vol_a:vol_b));
+    end
+end
